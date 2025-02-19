@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/orchera/static/css/main.9b3c971c.css",
+    "main.js": "/orchera/static/js/main.aa7eb0fe.js",
+    "static/js/488.e75445ad.chunk.js": "/orchera/static/js/488.e75445ad.chunk.js",
+    "static/media/turner.jpg": "/orchera/static/media/turner.4ef0cd11c3997a422e70.jpg",
+    "static/media/logo_text.png": "/orchera/static/media/logo_text.ce6591472afdef5e007c.png",
+    "index.html": "/orchera/index.html",
+    "main.9b3c971c.css.map": "/orchera/static/css/main.9b3c971c.css.map",
+    "main.aa7eb0fe.js.map": "/orchera/static/js/main.aa7eb0fe.js.map",
+    "488.e75445ad.chunk.js.map": "/orchera/static/js/488.e75445ad.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.9b3c971c.css",
+    "static/js/main.aa7eb0fe.js"
+  ]
+}
