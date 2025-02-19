@@ -11,14 +11,13 @@ const Summary = ({ results }) => {
             setSummaryError(null);
             try {
                 const titles = results.map(result => result.title).join(', ');
-                const prompt = `Please provide a brief summary of the following research papers: ${titles}`;
 
                 const response = await fetch('/api/summarize', {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ text: prompt }),
+                    body: JSON.stringify({ text: `${titles}` }),
                 });
                 const data = await response.json();
                 if (data.summary) {

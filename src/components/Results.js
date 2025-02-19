@@ -1,7 +1,6 @@
 import React from 'react';
 
 const Results = ({ results, selectedPaper, setSelectedPaper }) => {
-    // Only render if there are search results
     if (!results || results.length === 0) return null;
 
     return (
@@ -26,16 +25,40 @@ const Results = ({ results, selectedPaper, setSelectedPaper }) => {
                 </div>
                 {/* Paper Details */}
                 <div className="md:col-span-2 bg-white dark:bg-gray-800 p-6 rounded-xl shadow">
-                    <h2 className="text-xl font-semibold mb-4">Abstract</h2>
                     {selectedPaper ? (
-                        <div>
-                            <h3 className="text-lg font-bold mb-2">{selectedPaper.title}</h3>
-                            {selectedPaper.abstract ? (
-                                <p className="leading-relaxed">{selectedPaper.abstract}</p>
-                            ) : (
-                                <p>No abstract available.</p>
-                            )}
-                        </div>
+                        <>
+                            {/* Buttons Row */}
+                            <div className="flex flex-wrap gap-4 mb-4">
+                                {selectedPaper.url && (
+                                    <button
+                                        onClick={() => window.open(selectedPaper.url, '_blank')}
+                                        className="bg-gray-900 hover:bg-gray-800 text-white font-semibold py-2 px-4 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-700"
+                                    >
+                                        Read Full Paper
+                                    </button>
+                                )}
+                                <button
+                                    onClick={() => alert("View Author feature coming soon")}
+                                    className="bg-gray-900 hover:bg-gray-800 text-white font-semibold py-2 px-4 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-700"
+                                >
+                                    View Author
+                                </button>
+                                <button
+                                    onClick={() => alert("View Citation Graph feature coming soon")}
+                                    className="bg-gray-900 hover:bg-gray-800 text-white font-semibold py-2 px-4 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-700"
+                                >
+                                    View Citation Graph
+                                </button>
+                            </div>
+                            {/* Paper Abstract */}
+                            <div>
+                                {selectedPaper.abstract ? (
+                                    <p className="leading-relaxed">{selectedPaper.abstract}</p>
+                                ) : (
+                                    <p>No abstract available.</p>
+                                )}
+                            </div>
+                        </>
                     ) : (
                         <p>Please select a paper to view its abstract.</p>
                     )}
