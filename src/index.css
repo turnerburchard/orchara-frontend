@@ -19,3 +19,17 @@ code {
 img {
   width: 50px
 }
+
+input:-webkit-autofill,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:hover {
+  -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+  box-shadow: 0 0 0px 1000px white inset !important;
+  -webkit-text-fill-color: #000 !important;
+}
+
+input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: #d1d5db !important;
+}

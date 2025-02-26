@@ -43,7 +43,7 @@ const Summary = ({ results }) => {
 
     return (
         <div className="bg-white dark:bg-gray-800 p-6 rounded-3xl mt-8">
-            <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-100">Summary of Results:</h2>
+            {/*<h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-100">Summary of Results:</h2>*/}
             {loadingSummary ? (
                 <p className="text-gray-600 dark:text-gray-300">Loading summary...</p>
             ) : summaryError ? (

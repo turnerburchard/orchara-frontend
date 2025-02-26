@@ -44,7 +44,7 @@ function App() {
         <main className="container mx-auto p-4">
           <div className="flex flex-col items-center">
             {/* Search Area */}
-            <div className="w-full max-w-2xl bg-white dark:bg-gray-800 p-6 rounded-3xl shadow-lg mb-8">
+            <div className="w-full max-w-4xl bg-white dark:bg-gray-800 p-6 rounded-3xl shadow-lg mb-8">
               <Search
                   query={query}
                   setQuery={setQuery}
