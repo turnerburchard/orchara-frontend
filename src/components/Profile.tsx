@@ -60,11 +60,11 @@ const Profile = () => {
                         </li>
                         <li>
                             <button
-                                onClick={() => alert('About Orchera')}
+                                onClick={() => alert('About Orchara')}
                                 className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                                 type="button"
                             >
-                                About Orchera
+                                About Orchara
                             </button>
                         </li>
                     </ul>
