@@ -1,8 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
-import turner from '../img/turner.jpg';
 
 const Profile = () => {
-    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [isOpen, setIsOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement | null>(null);
 
     const toggleMenu = () => {
@@ -12,26 +11,28 @@ const Profile = () => {
     // Close the menu if a click happens outside the menu area.
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
-            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+            const menu = menuRef.current;
+            if (!menu || !menu.contains(event.target as Node)) {
                 setIsOpen(false);
             }
         };
 
-        document.addEventListener('mousedown', handleClickOutside);
+        if (isOpen) {
+            document.addEventListener("mousedown", handleClickOutside);
+        } else {
+            document.removeEventListener("mousedown", handleClickOutside);
+        }
+
         return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener("mousedown", handleClickOutside);
         };
-    }, []);
+    }, [isOpen]); // Only run effect when `isOpen` changes
 
     return (
         <div className="relative" ref={menuRef}>
-            <button 
-                onClick={toggleMenu} 
-                className="focus:outline-none"
-                type="button"
-            >
+            <button onClick={toggleMenu} className="focus:outline-none" type="button">
                 <img
-                    src={turner}
+                    src="/turner.jpg" // Use direct public path
                     alt="Profile"
                     className="h-10 w-10 rounded-full border border-gray-300 dark:border-gray-600"
                 />

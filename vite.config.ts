@@ -20,5 +20,6 @@ export default defineConfig({
     loader: 'tsx',
     include: /src\/.*\.[tj]sx?$/,
     exclude: []
-  }
+  },
+  assetsInclude: ['**/*.png']
 }) 
