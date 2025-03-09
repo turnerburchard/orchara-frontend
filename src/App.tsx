@@ -13,9 +13,14 @@ interface Paper {
   url?: string
 }
 
+interface ApiResponse {
+    results: Paper[];
+    error?: string;
+}
+
 function App(): JSX.Element {
   const [query, setQuery] = useState<string>('')
-  const [clusterSize, setClusterSize] = useState<number>(5)
+  const [clusterSize] = useState<number>(5)
   const [results, setResults] = useState<Paper[]>([])
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
@@ -48,28 +53,25 @@ function App(): JSX.Element {
       console.log("Raw response text:", responseText)
       
       if (!responseText) {
-        throw new Error('Empty response from server')
+        setError('Empty response from server')
+        return
       }
 
-      try {
-        const data = JSON.parse(responseText)
-        console.log("Parsed response data:", data)
-        if (!response.ok) {
-          setError(data.error || 'Search failed.')
-        } else if (!data.results) {
-          setError('Invalid response format: missing results')
-        } else {
-          setResults(data.results)
-        }
-      } catch (parseError) {
-        console.error("JSON parse error:", parseError)
-        throw new Error('Invalid JSON response from server')
+      const data = JSON.parse(responseText) as ApiResponse;
+      console.log("Parsed response data:", data)
+      if (!response.ok) {
+        setError(data.error || 'Search failed.')
+      } else if (!data.results) {
+        setError('Invalid response format: missing results')
+      } else {
+        setResults(data.results)
       }
     } catch (err) {
       console.error("Search error:", err)
       setError(err instanceof Error ? err.message : 'An error occurred')
+    } finally {
+      setLoading(false)
     }
-    setLoading(false)
   }
 
   return (

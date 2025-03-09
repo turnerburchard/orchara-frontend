@@ -26,9 +26,10 @@ const Search: React.FC<SearchProps> = ({ query, setQuery, onSearch, loading }) =
 
   const handleSubtopicClick = (topic: string) => {
     setQuery(topic);
-    setTimeout(() => {
-      onSearch({ preventDefault: () => {} } as React.FormEvent);
-    }, 100);
+    const syntheticEvent = {
+        preventDefault: () => {}
+    } as React.FormEvent<HTMLFormElement>;
+    onSearch(syntheticEvent);
   };
 
   return (

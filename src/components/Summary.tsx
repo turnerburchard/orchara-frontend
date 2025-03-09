@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 
 interface SearchResult {
     title: string;
-    // Add other properties that exist in your results
+    abstract?: string;
+    url?: string;
 }
 
 interface SummaryProps {

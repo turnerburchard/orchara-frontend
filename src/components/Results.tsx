@@ -13,6 +13,10 @@ interface ResultsProps {
 const Results = ({ results, selectedPaper, setSelectedPaper }: ResultsProps) => {
     if (!results || results.length === 0) return null;
 
+    const handlePaperClick = (paper: Paper) => {
+        setSelectedPaper(paper);
+    };
+
     return (
         <div className="mt-8">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -23,7 +27,7 @@ const Results = ({ results, selectedPaper, setSelectedPaper }: ResultsProps) => 
                         {results.map((paper, index) => (
                             <li
                                 key={index}
-                                onClick={() => setSelectedPaper(paper)}
+                                onClick={() => handlePaperClick(paper)}
                                 className={`cursor-pointer p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 ${
                                     selectedPaper === paper ? "bg-gray-200 dark:bg-gray-600" : ""
                                 }`}
