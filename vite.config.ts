@@ -7,15 +7,15 @@ export default defineConfig({
   resolve: {
     extensions: ['.tsx', '.ts', '.jsx', '.js']
   },
-  server: {
-    proxy: {
-      '/api': {
-        target: 'http://localhost:5001',
-        changeOrigin: true,
-        secure: false,
-      }
-    }
-  },
+      server: {
+        proxy: {
+          '/api': {
+            target: 'https://api.orchara.com',
+            changeOrigin: true,
+            secure: true,
+          }
+        }
+      },
   esbuild: {
     loader: 'tsx',
     include: /src\/.*\.[tj]sx?$/,

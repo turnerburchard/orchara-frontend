@@ -3,9 +3,5 @@ account_id = "tburchard4"
 workers_dev = true
 compatibility_date = "2024-03-09"
 
-main = "./dist/index.html"
-
 [site]
 bucket = "./dist"
-custom_domain = true
-pages_build_output_dir = "./dist"
