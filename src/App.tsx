@@ -91,8 +91,8 @@ function App(): JSX.Element {
           {/* Results Area */}
           {results.length > 0 && (
             <div className="w-full max-w-5xl bg-white dark:bg-gray-800 p-6 rounded-3xl shadow-lg">
-              <Summary results={results} />
-              {error && <div className="mt-4 text-red-600">{error}</div>}
+              {/*<Summary results={results} />*/}
+              {/*{error && <div className="mt-4 text-red-600">{error}</div>}*/}
               <Results
                 results={results}
                 selectedPaper={selectedPaper}
