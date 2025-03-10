@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 
+const ENABLE_EXTERNAL_LINK = true; // Toggle this flag to enable/disable external link
+
 const Profile = () => {
     const [isOpen, setIsOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement | null>(null);
@@ -27,16 +29,24 @@ const Profile = () => {
         };
     }, [isOpen]);
 
+    const handleProfileClick = () => {
+        if (ENABLE_EXTERNAL_LINK) {
+            window.location.href = "https://turnerburchard.com";
+        } else {
+            toggleMenu();
+        }
+    };
+
     return (
         <div className="relative" ref={menuRef}>
-            <button onClick={toggleMenu} className="focus:outline-none" type="button">
+            <button onClick={handleProfileClick} className="focus:outline-none" type="button">
                 <img
                     src="/turner.jpg"
                     alt="Profile"
                     className="h-10 w-10 rounded-full border border-gray-300 dark:border-gray-600"
                 />
             </button>
-            {isOpen && (
+            {!ENABLE_EXTERNAL_LINK && isOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
                     <ul className="py-2">
                         <li>
