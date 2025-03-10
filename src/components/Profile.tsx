@@ -8,7 +8,6 @@ const Profile = () => {
         setIsOpen((prev) => !prev);
     };
 
-    // Close the menu if a click happens outside the menu area.
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             const menu = menuRef.current;
@@ -26,13 +25,13 @@ const Profile = () => {
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
-    }, [isOpen]); // Only run effect when `isOpen` changes
+    }, [isOpen]);
 
     return (
         <div className="relative" ref={menuRef}>
             <button onClick={toggleMenu} className="focus:outline-none" type="button">
                 <img
-                    src="/turner.jpg" // Use direct public path
+                    src="/turner.jpg"
                     alt="Profile"
                     className="h-10 w-10 rounded-full border border-gray-300 dark:border-gray-600"
                 />
