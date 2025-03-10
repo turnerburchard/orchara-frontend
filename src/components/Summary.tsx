@@ -57,7 +57,8 @@ const Summary = ({ results }: SummaryProps) => {
             {loadingSummary ? (
                 <p className="text-gray-600 dark:text-gray-300">Loading summary...</p>
             ) : summaryError ? (
-                <p className="text-red-600">{summaryError}</p>
+                // <p className="text-red-600">{summaryError}</p>
+                <p></p>
             ) : summary ? (
                 <p className="text-gray-700 dark:text-gray-300">{summary}</p>
             ) : (
