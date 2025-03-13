@@ -7,7 +7,6 @@ interface SearchProps {
   loading: boolean;
 }
 
-// enable/disable subtopics
 const ENABLE_SUBTOPICS = false;
 
 const Search: React.FC<SearchProps> = ({ query, setQuery, onSearch, loading }) => {

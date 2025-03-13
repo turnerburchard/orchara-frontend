@@ -33,7 +33,8 @@ function App(): JSX.Element {
     setSelectedPaper(null)
     setLoading(true)
     try {
-      const response = await fetch(`${config.apiUrl}/search`, {
+      console.log("API URL:", config.apiUrl);
+      const response = await fetch(`${config.apiUrl}/api/search`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
