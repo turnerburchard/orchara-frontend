@@ -1,4 +1,3 @@
-import config from '../config';
 import { writeFile } from 'node:fs/promises';
 
 async function fetchSampleResponse() {

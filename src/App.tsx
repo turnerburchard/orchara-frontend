@@ -13,14 +13,12 @@ function App(): JSX.Element {
   const [clusterSize] = useState<number>(5)
   const [results, setResults] = useState<Paper[]>([])
   const [loading, setLoading] = useState<boolean>(false)
-  const [error, setError] = useState<string | null>(null)
   const [selectedPaper, setSelectedPaper] = useState<Paper | null>(null)
   const [usingSampleData, setUsingSampleData] = useState<boolean>(false)
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault()
     console.log("Starting search with query:", query, "cluster size:", clusterSize)
-    setError(null)
     setSelectedPaper(null)
     setLoading(true)
     setUsingSampleData(false)
@@ -69,7 +67,6 @@ function App(): JSX.Element {
         url: paper.url
       })))
       setUsingSampleData(true)
-      setError(null)
     } finally {
       setLoading(false)
     }
@@ -98,7 +95,6 @@ function App(): JSX.Element {
                 </div>
               )}
               <Summary results={results} usingSampleData={usingSampleData} />
-              {!usingSampleData && error && <div className="mt-4 text-red-600">{error}</div>}
               <Results
                 results={results}
                 selectedPaper={selectedPaper}

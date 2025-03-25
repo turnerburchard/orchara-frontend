@@ -20,7 +20,7 @@ const Results = ({ results, selectedPaper, setSelectedPaper }: ResultsProps) => 
                 <div className="md:col-span-1 bg-white dark:bg-gray-800 p-4 rounded-xl shadow">
                     <h2 className="text-xl font-semibold mb-4">Results:</h2>
                     <ul className="space-y-2">
-                        {results.map((paper, index) => (
+                        {results.map((paper) => (
                             <li
                                 key={paper.paper_id}
                                 onClick={() => handlePaperClick(paper)}
