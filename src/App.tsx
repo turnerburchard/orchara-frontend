@@ -5,18 +5,8 @@ import Search from './components/Search'
 import Summary from './components/Summary'
 import Results from './components/Results'
 import config from './config'
-
-
-interface Paper {
-  title: string
-  abstract?: string
-  url?: string
-}
-
-interface ApiResponse {
-    results: Paper[];
-    error?: string;
-}
+import { sampleResponse } from './mockData/sampleResponse'
+import type { Paper, ApiResponse } from './types'
 
 function App(): JSX.Element {
   const [query, setQuery] = useState<string>('')
@@ -25,6 +15,7 @@ function App(): JSX.Element {
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
   const [selectedPaper, setSelectedPaper] = useState<Paper | null>(null)
+  const [usingSampleData, setUsingSampleData] = useState<boolean>(false)
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -32,6 +23,8 @@ function App(): JSX.Element {
     setError(null)
     setSelectedPaper(null)
     setLoading(true)
+    setUsingSampleData(false)
+    
     try {
       console.log("API URL:", config.apiUrl);
       const response = await fetch(`${config.apiUrl}/api/search`, {
@@ -54,22 +47,29 @@ function App(): JSX.Element {
       console.log("Raw response text:", responseText)
       
       if (!responseText) {
-        setError('Empty response from server')
-        return
+        throw new Error('Empty response from server')
       }
 
       const data = JSON.parse(responseText) as ApiResponse;
       console.log("Parsed response data:", data)
       if (!response.ok) {
-        setError(data.error || 'Search failed.')
+        throw new Error(data.error || 'Search failed.')
       } else if (!data.results) {
-        setError('Invalid response format: missing results')
+        throw new Error('Invalid response format: missing results')
       } else {
         setResults(data.results)
       }
     } catch (err) {
       console.error("Search error:", err)
-      setError(err instanceof Error ? err.message : 'An error occurred')
+      // Use sample data as fallback
+      setResults(sampleResponse.papers.map(paper => ({
+        paper_id: String(paper.paper_id),
+        title: paper.title,
+        abstract: paper.abstract,
+        url: paper.url
+      })))
+      setUsingSampleData(true)
+      setError(null)
     } finally {
       setLoading(false)
     }
@@ -92,8 +92,13 @@ function App(): JSX.Element {
           {/* Results Area */}
           {results.length > 0 && (
             <div className="w-full max-w-5xl bg-white dark:bg-gray-800 p-6 rounded-3xl shadow-lg">
-              {/*<Summary results={results} />*/}
-              {/*{error && <div className="mt-4 text-red-600">{error}</div>}*/}
+              {usingSampleData && (
+                <div className="mb-4 p-4 bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 rounded-lg">
+                  Note: Displaying sample data because the backend is unavailable
+                </div>
+              )}
+              <Summary results={results} usingSampleData={usingSampleData} />
+              {!usingSampleData && error && <div className="mt-4 text-red-600">{error}</div>}
               <Results
                 results={results}
                 selectedPaper={selectedPaper}

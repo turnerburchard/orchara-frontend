@@ -1,0 +1,78 @@
+{
+  "papers": [
+    {
+      "abstract": "Unpaired image-to-image translation (I2IT) involves establishing an effective mapping between the source and target domains to enable cross-domain image transformation. Previous contrastive learning methods inadequately accounted for the variations in features between two domains and the interrelatedness of elements within the features. Consequently, this can result in challenges encompassing model instability and the blurring of image edge features. To this end, we propose a multi-attention bidirectional contrastive learning method for unpaired I2IT, referred to as MabCUT. We design separate embedding blocks for each domain based on depthwise separable convolutions and train them simultaneously from both the source and target domains. Then we utilize a pixel-level multi-attention extractor to query images from embedding blocks in order to select feature blocks with crucial information, thus preserving essential features from the source domain. To enhance the feature representation capability of the model, we incorporate depthwise separable convolutions for the generator. We conducted comprehensive evaluations using three datasets, demonstrating that our approach enhances the quality of unpaired I2IT while avoiding the issue of mode collapse-related image blurring.",
+      "diversity_score": 0.11297440423654016,
+      "final_score": 0.19547297191136992,
+      "internal_id": 3080,
+      "keyword_score": 0.021052631578947368,
+      "paper_id": 3055,
+      "semantic_score": 0.43412303924560547,
+      "title": "Multi-attention bidirectional contrastive learning method for unpaired image-to-image translation",
+      "url": "http://dx.doi.org/10.1371/journal.pone.0301580"
+    },
+    {
+      "abstract": "With recent advancements in robotic surgery, notable strides have been made in visual question answering (VQA). Existing VQA systems typically generate textual answers to questions but fail to indicate the location of the relevant content within the image. This limitation restricts the interpretative capacity of the VQA models and their ability to explore specific image regions. To address this issue, this study proposes a grounded VQA model for robotic surgery, capable of localizing a specific region during answer prediction. Drawing inspiration from prompt learning in language models, a dual-modality prompt model was developed to enhance precise multimodal information interactions. Specifically, two complementary prompters were introduced to effectively integrate visual and textual prompts into the encoding process of the model. A visual complementary prompter merges visual prompt knowledge with visual information features to guide accurate localization. The textual complementary prompter aligns visual information with textual prompt knowledge and textual information, guiding textual information towards a more accurate inference of the answer. Additionally, a multiple iterative fusion strategy was adopted for comprehensive answer reasoning, to ensure high-quality generation of textual and grounded answers. The experimental results validate the effectiveness of the model, demonstrating its superiority over existing methods on the EndoVis-18 and EndoVis-17 datasets.",
+      "diversity_score": 0.11947626841243862,
+      "final_score": 0.18263111048520916,
+      "internal_id": 883,
+      "keyword_score": 0.00909090909090909,
+      "paper_id": 860,
+      "semantic_score": 0.41534507274627686,
+      "title": "Dual modality prompt learning for visual question-grounded answering in robotic surgery",
+      "url": "http://dx.doi.org/10.1186/s42492-024-00160-z"
+    },
+    {
+      "abstract": "Predictive maintenance harnesses statistical analysis to preemptively identify equipment and system faults, facilitating cost- effective preventive measures. Machine learning algorithms enable comprehensive analysis of historical data, revealing emerging patterns and accurate predictions of impending system failures. Common hurdles in applying ML algorithms to PdM include data scarcity, data imbalance due to few failure instances, and the temporal dependence nature of PdM data. This study proposes an ML-based approach that adapts to these hurdles through the generation of synthetic data, temporal feature extraction, and the creation of failure horizons. The approach employs Generative Adversarial Networks to generate synthetic data and LSTM layers to extract temporal features. ML algorithms trained on the generated data achieved high accuracies: ANN (88.98%), Random Forest (74.15%), Decision Tree (73.82%), KNN (74.02%), and XGBoost (73.93%).",
+      "diversity_score": 0.121418826739427,
+      "final_score": 0.17151741991047428,
+      "internal_id": 2725,
+      "keyword_score": 0.02666666666666667,
+      "paper_id": 2703,
+      "semantic_score": 0.3651055097579956,
+      "title": "Strategies for overcoming data scarcity, imbalance, and feature selection challenges in machine learning models for predictive maintenance",
+      "url": "http://dx.doi.org/10.1038/s41598-024-59958-9"
+    },
+    {
+      "abstract": "Cloud detection technology is crucial in remote sensing image processing. While cloud detection is a mature research field, challenges persist in detecting clouds on reflective surfaces like ice, snow, and sand. Particularly, the detection of cloud shadows remains a significant area of concern within cloud detection technology. To address the above problems, a convolutional self-attention mechanism feature fusion network model based on a U-shaped structure is proposed. The model employs an encoder–decoder structure based on UNet. The encoder performs down-sampling to extract deep features, while the decoder uses up-sampling to reconstruct the feature map. To capture the key features of the image, Channel Spatial Attention Module (CSAM) is introduced in this work. This module incorporates an attention mechanism for adaptive field-of-view adjustments. In the up-sampling process, different channels are selected to obtain rich information. Contextual information is integrated to improve the extraction of edge details. Feature fusion at the same layer between up-sampling and down-sampling is carried out. The Feature Fusion Module (FFM) facilitates the positional distribution of the image on a pixel-by-pixel basis. A clear boundary is distinguished using an innovative loss function. Finally, the experimental results on the dataset GF1_WHU show that the segmentation results of this method are better than the existing methods. Hence, our model is of great significance for practical cloud shadow segmentation.",
+      "diversity_score": 0.10866477272727273,
+      "final_score": 0.16575837269845803,
+      "internal_id": 2866,
+      "keyword_score": 0.008620689655172414,
+      "paper_id": 2852,
+      "semantic_score": 0.37645387649536133,
+      "title": "AFMUNet: Attention Feature Fusion Network Based on a U-Shaped Structure for Cloud and Cloud Shadow Detection",
+      "url": "http://dx.doi.org/10.3390/rs16091574"
+    },
+    {
+      "abstract": "Pine wilt disease is a highly contagious forest quarantine ailment that spreads rapidly. In this study, we designed a new Pine-YOLO model for pine wilt disease detection by incorporating Dynamic Snake Convolution (DSConv), the Multidimensional Collaborative Attention Mechanism (MCA), and Wise-IoU v3 (WIoUv3) into a YOLOv8 network. Firstly, we collected UAV images from Beihai Forest and Linhai Park in Weihai City to construct a dataset via a sliding window method. Then, we used this dataset to train and test Pine-YOLO. We found that DSConv adaptively focuses on fragile and curved local features and then enhances the perception of delicate tubular structures in discolored pine branches. MCA strengthens the attention to the specific features of pine trees, helps to enhance the representational capability, and improves the generalization to diseased pine tree recognition in variable natural environments. The bounding box loss function has been optimized to WIoUv3, thereby improving the overall recognition accuracy and robustness of the model. The experimental results reveal that our Pine-YOLO model achieved the following values across various evaluation metrics: MAP@0.5 at 90.69%, mAP@0.5:0.95 at 49.72%, precision at 91.31%, recall at 85.72%, and F1-score at 88.43%. These outcomes underscore the high effectiveness of our model. Therefore, our newly designed Pine-YOLO perfectly addresses the disadvantages of the original YOLO network, which helps to maintain the health and stability of the ecological environment.",
+      "diversity_score": 0.12773403324584426,
+      "final_score": 0.16309394915690054,
+      "internal_id": 244,
+      "keyword_score": 0.008333333333333333,
+      "paper_id": 234,
+      "semantic_score": 0.36538469791412354,
+      "title": "Pine-YOLO: A Method for Detecting Pine Wilt Disease in Unmanned Aerial Vehicle Remote Sensing Images",
+      "url": "http://dx.doi.org/10.3390/f15050737"
+    }
+  ],
+  "summary": {
+    "citations": [
+      {
+        "context": "Improved quality in unpaired image-to-image translation through a multi-attention method.",
+        "id": 1,
+        "paper_id": 3055,
+        "title": "Multi-attention bidirectional contrastive learning method for unpaired image-to-image translation",
+        "url": "http://dx.doi.org/10.1371/journal.pone.0301580"
+      },
+      {
+        "context": "Enhanced localization in visual question answering for robotic surgery.",
+        "id": 2,
+        "paper_id": 860,
+        "title": "Dual modality prompt learning for visual question-grounded answering in robotic surgery",
+        "url": "http://dx.doi.org/10.1186/s42492-024-00160-z"
+      }
+    ],
+    "summary": "The research examines advancements in image processing and machine learning techniques for diverse applications, highlighting approaches that enhance predictive accuracy and operational efficiency. Paper 1 presents a multi-attention bidirectional contrastive learning method for unpaired image-to-image translation, demonstrating improved quality in image transformations by preserving essential features through a pixel-level attention extractor, ultimately overcoming challenges like model instability and image blurring {{cite:1}}. Paper 2 introduces a dual modality prompt learning model tailored for visual question answering in robotic surgery, which enables precise localization of relevant content in images during answer predictions, thus bridging the gap between visual information and textual prompts to enhance interpretability and accuracy in surgical environments {{cite:2}}."
+  }
+}

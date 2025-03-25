@@ -1,8 +1,4 @@
-interface Paper {
-    title: string;
-    abstract?: string;
-    url?: string;
-}
+import type { Paper } from '../types';
 
 interface ResultsProps {
     results: Paper[];
@@ -26,10 +22,10 @@ const Results = ({ results, selectedPaper, setSelectedPaper }: ResultsProps) => 
                     <ul className="space-y-2">
                         {results.map((paper, index) => (
                             <li
-                                key={index}
+                                key={paper.paper_id}
                                 onClick={() => handlePaperClick(paper)}
                                 className={`cursor-pointer p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 ${
-                                    selectedPaper === paper ? "bg-gray-200 dark:bg-gray-600" : ""
+                                    selectedPaper?.paper_id === paper.paper_id ? "bg-gray-200 dark:bg-gray-600" : ""
                                 }`}
                             >
                                 <strong>{paper.title}</strong>
@@ -43,14 +39,12 @@ const Results = ({ results, selectedPaper, setSelectedPaper }: ResultsProps) => 
                         <>
                             {/* Buttons Row */}
                             <div className="flex flex-wrap gap-4 mb-4">
-                                {selectedPaper.url && (
-                                    <button
-                                        onClick={() => window.open(selectedPaper.url, '_blank')}
-                                        className="bg-gray-900 hover:bg-gray-800 text-white font-semibold py-2 px-4 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-700"
-                                    >
-                                        Read Full Paper
-                                    </button>
-                                )}
+                                <button
+                                    onClick={() => window.open(selectedPaper.url, '_blank')}
+                                    className="bg-gray-900 hover:bg-gray-800 text-white font-semibold py-2 px-4 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-700"
+                                >
+                                    Read Full Paper
+                                </button>
                                 <button
                                     onClick={() => alert("View Author feature coming soon")}
                                     className="bg-gray-900 hover:bg-gray-800 text-white font-semibold py-2 px-4 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-700"
@@ -66,11 +60,7 @@ const Results = ({ results, selectedPaper, setSelectedPaper }: ResultsProps) => 
                             </div>
                             {/* Paper Abstract */}
                             <div>
-                                {selectedPaper.abstract ? (
-                                    <p className="leading-relaxed">{selectedPaper.abstract}</p>
-                                ) : (
-                                    <p>No abstract available.</p>
-                                )}
+                                <p className="leading-relaxed">{selectedPaper.abstract}</p>
                             </div>
                         </>
                     ) : (
