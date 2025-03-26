@@ -78,7 +78,7 @@ function App(): JSX.Element {
       <main className="w-full mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center w-full">
           {/* Search Area */}
-          <div className="w-full max-w-4xl bg-white dark:bg-gray-800 p-6 rounded-3xl shadow-lg mb-8">
+          <div className="w-full max-w-4xl bg-white dark:bg-gray-800 p-6 rounded-3xl shadow-lg mb-8 mt-8">
             <Search
               query={query}
               setQuery={setQuery}
