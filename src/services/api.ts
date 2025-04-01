@@ -1,6 +1,6 @@
 import config from '../config';
 import { sampleResponse } from '../mockData/sampleResponse';
-import type { Paper, ApiResponse } from '../types';
+import type { Paper, ApiResponse } from '../types/paper';
 
 export const searchPapers = async (query: string, clusterSize: number): Promise<Paper[]> => {
     try {

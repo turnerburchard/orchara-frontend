@@ -1,4 +1,4 @@
-import type { Paper } from '../types';
+import type { Paper } from '../types/paper';
 
 interface ResultsProps {
     results: Paper[];

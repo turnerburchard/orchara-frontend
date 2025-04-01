@@ -1,20 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import config from '../config';
 import { sampleResponse } from '../mockData/sampleResponse';
-import type { Paper } from '../types';
-
-interface Citation {
-    id: number;
-    paper_id: string;
-    title: string;
-    url: string;
-    context: string;
-}
-
-interface SummaryResponse {
-    summary: string;
-    citations: Citation[];
-}
+import type { Paper } from '../types/paper';
+import type { SummaryResponse } from '../types/summary';
 
 interface SummaryState {
     data: SummaryResponse | null;

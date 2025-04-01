@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { Paper } from '../types';
+import type { Paper } from '../types/paper';
 import { searchPapers } from '../services/api';
 
 export const useSearch = (initialClusterSize: number = 5) => {

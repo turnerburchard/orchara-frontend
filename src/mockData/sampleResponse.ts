@@ -1,4 +1,4 @@
-import { Paper } from '../types';
+import { Paper } from '../types/paper';
 
 export interface SampleResponse {
     papers: Paper[];

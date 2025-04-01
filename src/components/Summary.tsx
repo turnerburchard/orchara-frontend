@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { sampleResponse } from '../mockData/sampleResponse';
-import type { Paper } from '../types';
+import type { Paper } from '../types/paper';
 import { useSummary } from '../hooks/useSummary';
 
 interface SummaryProps {
