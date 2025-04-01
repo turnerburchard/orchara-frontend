@@ -24,34 +24,62 @@ interface SummaryProps {
 const Summary = ({ results, usingSampleData = false }: SummaryProps) => {
     const [summaryData, setSummaryData] = useState<SummaryResponse | null>(null);
     const [loadingSummary, setLoadingSummary] = useState(false);
-    const [summaryError, setSummaryError] = useState<string | null>(null);
+    
+    const validateSummaryResponse = (data: any): data is SummaryResponse => {
+        return (
+            typeof data === 'object' &&
+            data !== null &&
+            typeof data.summary === 'string' &&
+            Array.isArray(data.citations) &&
+            data.citations.every((citation: any) =>
+                typeof citation === 'object' &&
+                citation !== null &&
+                typeof citation.id === 'number' &&
+                typeof citation.paper_id === 'string' &&
+                typeof citation.title === 'string' &&
+                typeof citation.url === 'string' &&
+                typeof citation.context === 'string'
+            )
+        );
+    };
 
     useEffect(() => {
         const fetchSummary = async () => {
             if (usingSampleData) {
-                setSummaryData(sampleResponse.summary);
+                if (validateSummaryResponse(sampleResponse.summary)) {
+                    setSummaryData(sampleResponse.summary);
+                }
                 return;
             }
 
             setLoadingSummary(true);
-            setSummaryError(null);
             try {
+                const papersWithStringIds = results.map(paper => ({
+                    ...paper,
+                    paper_id: String(paper.paper_id)
+                }));
+                
                 const response = await fetch(`${config.apiUrl}/api/summarize_papers`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ papers: results }),
+                    body: JSON.stringify({ papers: papersWithStringIds }),
                 });
                 
                 if (!response.ok) {
-                    throw new Error('Failed to fetch summary');
+                    console.error("Summary API error:", await response.text());
+                    return;
                 }
                 
                 const data = await response.json();
-                setSummaryData(data);
+                if (validateSummaryResponse(data)) {
+                    setSummaryData(data);
+                } else {
+                    console.error("Invalid summary response format:", data);
+                }
             } catch (err) {
-                setSummaryError(err instanceof Error ? err.message : "Error fetching summary.");
+                console.error("Summary error:", err);
             } finally {
                 setLoadingSummary(false);
             }
@@ -67,7 +95,7 @@ const Summary = ({ results, usingSampleData = false }: SummaryProps) => {
     if (!results || results.length === 0) return null;
 
     const renderSummaryWithCitations = () => {
-        if (!summaryData) return null;
+        if (!summaryData?.summary || !summaryData?.citations) return null;
 
         const { summary, citations } = summaryData;
         const parts = summary.split(/(\{\{cite:\d+\}\})/g);
@@ -78,21 +106,21 @@ const Summary = ({ results, usingSampleData = false }: SummaryProps) => {
                 const citationId = parseInt(citationMatch[1]);
                 const citation = citations.find(c => c.id === citationId);
 
-                if (citation) {
-                    return (
-                        <span key={index} className="group relative">
-                            <a
-                                href={citation.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 cursor-pointer"
-                                title={`${citation.title}\n${citation.context}`}
-                            >
-                                [{citationId}]
-                            </a>
-                        </span>
-                    );
-                }
+                if (!citation) return ''; // Skip invalid citations silently
+
+                return (
+                    <span key={index} className="group relative">
+                        <a
+                            href={citation.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 cursor-pointer"
+                            title={`${citation.title}\n${citation.context}`}
+                        >
+                            [{citationId}]
+                        </a>
+                    </span>
+                );
             }
             return part;
         });
@@ -103,8 +131,6 @@ const Summary = ({ results, usingSampleData = false }: SummaryProps) => {
             {/*<h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-100">Summary of Results:</h2>*/}
             {loadingSummary ? (
                 <p className="text-gray-600 dark:text-gray-300">Loading summary...</p>
-            ) : summaryError ? (
-                <p className="text-red-600 dark:text-red-400">{summaryError}</p>
             ) : summaryData ? (
                 <div className="prose dark:prose-invert max-w-none">
                     <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
