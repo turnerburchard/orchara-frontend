@@ -1,161 +1,151 @@
-import type { FC, ChangeEvent, DragEvent } from 'react';
-import { CloudArrowUpIcon } from '@heroicons/react/24/outline';
-import { BlackButton } from '../ui/buttons';
-import { useState, useRef, useEffect } from 'react';
+import type { FC } from 'react';
+import { useState, useCallback } from 'react';
 import { useUpload } from '../../hooks/useUpload';
+import { BlackButton } from '../ui/buttons';
+import { CloudArrowUpIcon } from '@heroicons/react/24/outline';
 
 interface UploadModalProps {
     isOpen: boolean;
     onClose: () => void;
+    onSuccess?: () => void;
     userId?: string;
 }
 
-const UploadModal: FC<UploadModalProps> = ({ isOpen, onClose, userId }) => {
+const UploadModal: FC<UploadModalProps> = ({ isOpen, onClose, onSuccess, userId }) => {
     const [files, setFiles] = useState<File[]>([]);
-    const [isDragging, setIsDragging] = useState(false);
-    const fileInputRef = useRef<HTMLInputElement>(null);
-    const { uploadFiles, loading, error, success, paper, missingDoi, resetState } = useUpload(userId);
+    const { uploadFiles, loading, error, success, paper, missingDoi } = useUpload(userId);
 
-    // Reset state when modal is opened
-    useEffect(() => {
-        if (isOpen) {
-            resetState();
-        }
-    }, [isOpen, resetState]);
+    const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const droppedFiles = Array.from(e.dataTransfer.files).filter(file => file.type === 'application/pdf');
+        setFiles(prev => [...prev, ...droppedFiles]);
+    }, []);
 
-    // Close modal on successful upload
-    useEffect(() => {
-        if (success) {
-            const timer = setTimeout(() => {
-                setFiles([]);
-                onClose();
-            }, 1500);
-            return () => clearTimeout(timer);
+    const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+    }, []);
+
+    const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        const selectedFiles = Array.from(e.target.files || []).filter(file => file.type === 'application/pdf');
+        setFiles(prev => [...prev, ...selectedFiles]);
+    }, []);
+
+    const handleUpload = async () => {
+        if (files.length === 0) return;
+        
+        try {
+            await uploadFiles(files);
+            if (success && onSuccess) {
+                onSuccess();
+            }
+        } catch (err) {
+            console.error('Upload failed:', err);
         }
-    }, [success, onClose]);
+    };
+
+    const removeFile = (index: number) => {
+        setFiles(prev => prev.filter((_, i) => i !== index));
+    };
 
     if (!isOpen) return null;
 
-    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files) {
-            setFiles(Array.from(e.target.files));
-        }
-    };
-
-    const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        setIsDragging(true);
-    };
-
-    const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        setIsDragging(false);
-    };
-
-    const handleDrop = (e: DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        setIsDragging(false);
-        
-        if (e.dataTransfer.files) {
-            setFiles(Array.from(e.dataTransfer.files));
-        }
-    };
-
-    const handleBrowseClick = () => {
-        fileInputRef.current?.click();
-    };
-
-    const handleUpload = async () => {
-        const success = await uploadFiles(files);
-        if (success) {
-            // Success is handled by the useEffect
-        }
-    };
-
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white dark:bg-gray-800 rounded-lg p-8 max-w-md w-full">
-                <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Upload Papers</h2>
-                    <button 
-                        onClick={onClose}
-                        className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                    >
-                        <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-                <div 
-                    className={`border-2 border-dashed ${isDragging ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-gray-300 dark:border-gray-600'} rounded-lg p-8 text-center transition-colors`}
-                    onDragOver={handleDragOver}
-                    onDragLeave={handleDragLeave}
-                    onDrop={handleDrop}
-                >
-                    <CloudArrowUpIcon className="h-12 w-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
-                    <p className="text-gray-600 dark:text-gray-300 mb-2">Drag and drop your PDF papers here</p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">or</p>
-                    <input 
-                        type="file" 
-                        ref={fileInputRef} 
-                        onChange={handleFileChange} 
-                        className="hidden" 
-                        multiple 
-                        accept=".pdf"
-                    />
-                    <BlackButton className="mt-4" onClick={handleBrowseClick}>
-                        Browse files
-                    </BlackButton>
-                </div>
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-2xl">
+                <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">Upload Papers</h2>
                 
-                {error && (
-                    <div className="mt-4 p-3 bg-red-100 text-red-700 rounded-md">
-                        {error}
-                    </div>
-                )}
-                
-                {success && (
-                    <div className="mt-4 p-3 bg-green-100 text-green-700 rounded-md">
-                        {paper ? (
-                            <div>
-                                <p className="font-medium">Paper uploaded successfully!</p>
-                                <p className="text-sm mt-1">Title: {paper.title}</p>
-                                {missingDoi && (
-                                    <p className="text-sm mt-1 text-amber-600">
-                                        Note: DOI was not found in the paper.
-                                    </p>
-                                )}
-                            </div>
-                        ) : (
-                            <p>File uploaded successfully!</p>
+                {success ? (
+                    <div className="text-center py-8">
+                        <div className="text-green-500 mb-4">
+                            <svg className="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                        </div>
+                        <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
+                            Upload Successful!
+                        </h3>
+                        {paper && (
+                            <p className="text-gray-600 dark:text-gray-300 mb-4">
+                                {paper.title} has been added to your library.
+                            </p>
                         )}
+                        {missingDoi && (
+                            <p className="text-yellow-600 dark:text-yellow-400 text-sm mb-4">
+                                Note: No DOI was found in the paper. You may want to add it manually later.
+                            </p>
+                        )}
+                        <BlackButton onClick={onClose}>
+                            Close
+                        </BlackButton>
                     </div>
-                )}
-                
-                {files.length > 0 && (
-                    <div className="mt-6">
-                        <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">Selected Files:</h3>
-                        <ul className="space-y-2 max-h-40 overflow-y-auto">
-                            {files.map((file, index) => (
-                                <li key={index} className="flex items-center justify-between bg-gray-50 dark:bg-gray-700 p-2 rounded">
-                                    <span className="text-sm text-gray-700 dark:text-gray-300 truncate">{file.name}</span>
-                                    <button 
-                                        onClick={() => setFiles(files.filter((_, i) => i !== index))}
-                                        className="text-red-500 hover:text-red-700"
-                                    >
-                                        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                        </svg>
-                                    </button>
-                                </li>
-                            ))}
-                        </ul>
-                        <div className="mt-4 flex justify-end">
-                            <BlackButton onClick={handleUpload} disabled={loading}>
-                                {loading ? 'Uploading...' : `Upload ${files.length} ${files.length === 1 ? 'file' : 'files'}`}
+                ) : (
+                    <>
+                        <div 
+                            className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 mb-4 text-center"
+                            onDrop={handleDrop}
+                            onDragOver={handleDragOver}
+                        >
+                            <CloudArrowUpIcon className="h-12 w-12 mx-auto text-gray-400 dark:text-gray-500 mb-4" />
+                            <p className="text-gray-600 dark:text-gray-300 mb-2">
+                                Drag and drop PDF files here, or
+                            </p>
+                            <label className="cursor-pointer">
+                                <span className="text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300">
+                                    browse
+                                </span>
+                                <input
+                                    type="file"
+                                    className="hidden"
+                                    accept=".pdf"
+                                    multiple
+                                    onChange={handleFileSelect}
+                                />
+                            </label>
+                        </div>
+
+                        {files.length > 0 && (
+                            <div className="mb-4">
+                                <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Selected Files:</h3>
+                                <ul className="space-y-2">
+                                    {files.map((file, index) => (
+                                        <li key={index} className="flex items-center justify-between bg-gray-50 dark:bg-gray-700 p-2 rounded">
+                                            <span className="text-sm text-gray-600 dark:text-gray-300 truncate">{file.name}</span>
+                                            <button
+                                                onClick={() => removeFile(index)}
+                                                className="text-red-500 hover:text-red-700"
+                                            >
+                                                ×
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+
+                        {error && (
+                            <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">
+                                {error}
+                            </div>
+                        )}
+
+                        <div className="flex justify-end space-x-3">
+                            <button
+                                onClick={onClose}
+                                className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100"
+                            >
+                                Cancel
+                            </button>
+                            <BlackButton
+                                onClick={handleUpload}
+                                disabled={files.length === 0 || loading}
+                            >
+                                {loading ? 'Uploading...' : 'Upload'}
                             </BlackButton>
                         </div>
-                    </div>
+                    </>
                 )}
             </div>
         </div>

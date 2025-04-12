@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import config from '../config';
+import type { Paper } from '../types/library';
 
 interface UploadState {
     loading: boolean;
     error: string | null;
     success: boolean;
-    paper: any | null;
+    paper: Paper | null;
     missingDoi: boolean;
 }
 
@@ -37,7 +38,7 @@ export const useUpload = (userId: string = 'user0') => {
             formData.append('file', file);
             formData.append('user_id', userId);
 
-            const response = await fetch(`${config.apiUrl}/upload-pdf`, {
+            const response = await fetch(`${config.apiUrl}/api/upload-pdf`, {
                 method: 'POST',
                 body: formData,
             });
@@ -54,11 +55,25 @@ export const useUpload = (userId: string = 'user0') => {
 
             const data = await response.json();
             
+            // Ensure the paper data matches our Paper interface
+            const paper: Paper = {
+                id: data.paper.id,
+                paper_id: data.paper.paper_id || data.paper.id,
+                title: data.paper.title,
+                authors: data.paper.authors || [],
+                abstract: data.paper.abstract,
+                doi: data.paper.doi,
+                publication_date: data.paper.publication_date,
+                file_path: data.paper.file_path,
+                created_at: data.paper.created_at,
+                updated_at: data.paper.updated_at
+            };
+            
             setState({ 
                 loading: false, 
                 error: null, 
                 success: data.success, 
-                paper: data.paper || null,
+                paper,
                 missingDoi: data.missing_doi || false
             });
             
