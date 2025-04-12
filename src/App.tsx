@@ -4,7 +4,7 @@ import Header from './components/Header'
 import Search from './components/Search'
 import Summary from './components/Summary'
 import Results from './components/Results'
-import Library from './components/Library'
+import Library from './components/library/Library'
 import { useSearch } from './hooks/useSearch'
 
 function HomePage(): JSX.Element {

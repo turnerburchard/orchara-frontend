@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { BlackButton } from './ui/buttons';
 
 interface SearchProps {
   query: string;
@@ -51,13 +52,13 @@ const Search: React.FC<SearchProps> = ({ query, setQuery, onSearch, loading }) =
               className="bg-white px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-0 focus:shadow-none dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600"
           />
         </div>
-        <button
+        <BlackButton
             type="submit"
             disabled={loading}
-            className="w-full bg-gray-900 hover:bg-gray-800 text-white font-semibold py-3 px-4 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-700 focus:ring-offset-2 disabled:opacity-50"
+            className="w-full py-3"
         >
           {loading ? 'Searching...' : 'Search'}
-        </button>
+        </BlackButton>
         {ENABLE_SUBTOPICS && showSubtopics && (
             <div className="space-y-4">
               <h3 className="text-center text-gray-700 dark:text-gray-200 font-semibold">
@@ -65,15 +66,14 @@ const Search: React.FC<SearchProps> = ({ query, setQuery, onSearch, loading }) =
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
                 {subtopics.map((topic, index) => (
-                    <button
-                        type="button"
+                    <BlackButton
                         key={index}
                         onClick={() => handleSubtopicClick(topic)}
                         title={topic}
-                        className="bg-gray-900 hover:bg-gray-800 text-white font-semibold py-2 px-4 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-700 truncate"
+                        className="truncate"
                     >
                       {topic}
-                    </button>
+                    </BlackButton>
                 ))}
               </div>
             </div>
