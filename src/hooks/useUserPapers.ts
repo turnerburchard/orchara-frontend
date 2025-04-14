@@ -12,8 +12,11 @@ interface UserPapersState {
 interface BackendPaper {
     paper_id: string;
     title: string;
+    abstract: string;
+    authors: string;
+    full_text: string;
     url: string;
-    abstract?: string;
+    upload_date: string;
 }
 
 export const useUserPapers = (userId: string = 'user0') => {
@@ -41,13 +44,13 @@ export const useUserPapers = (userId: string = 'user0') => {
                 id: paper.paper_id,
                 paper_id: paper.paper_id,
                 title: paper.title,
-                authors: [], // Backend doesn't return authors yet
+                authors: paper.authors ? paper.authors.split(',').map(author => author.trim()) : [],
                 abstract: paper.abstract || '',
                 doi: undefined, // Backend doesn't return DOI yet
                 publication_date: undefined, // Backend doesn't return publication date yet
                 file_path: paper.url,
-                created_at: new Date().toISOString(), // Backend doesn't return timestamps yet
-                updated_at: new Date().toISOString() // Backend doesn't return timestamps yet
+                created_at: paper.upload_date || new Date().toISOString(),
+                updated_at: paper.upload_date || new Date().toISOString()
             })) : [];
             
             setState({
