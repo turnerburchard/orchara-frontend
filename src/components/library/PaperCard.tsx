@@ -24,15 +24,6 @@ const PaperCard: FC<PaperCardProps> = ({ paper, onDelete }) => {
                             {paper.title || 'Untitled Paper'}
                         </h3>
                         <div className="flex space-x-2">
-                            {paper.file_path && (
-                                <button 
-                                    className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                                    onClick={() => window.open(paper.file_path, '_blank')}
-                                    title="View PDF"
-                                >
-                                    <DocumentTextIcon className="h-5 w-5" />
-                                </button>
-                            )}
                             {onDelete && (
                                 <button 
                                     className="text-red-500 hover:text-red-700"

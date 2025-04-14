@@ -10,6 +10,8 @@ interface PaperDetailsModalProps {
 
 const PaperDetailsModal: FC<PaperDetailsModalProps> = ({ isOpen, onClose, paper }) => {
     if (!isOpen) return null;
+    
+    console.log('PaperDetailsModal received paper:', paper);
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">

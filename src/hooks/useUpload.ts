@@ -57,16 +57,16 @@ export const useUpload = (userId: string = 'user0') => {
             
             // Ensure the paper data matches our Paper interface
             const paper: Paper = {
-                id: data.paper.id,
-                paper_id: data.paper.paper_id || data.paper.id,
+                id: data.paper.paper_id,
+                paper_id: data.paper.paper_id,
                 title: data.paper.title,
-                authors: data.paper.authors || [],
-                abstract: data.paper.abstract,
-                doi: data.paper.doi,
-                publication_date: data.paper.publication_date,
-                file_path: data.paper.file_path,
-                created_at: data.paper.created_at,
-                updated_at: data.paper.updated_at
+                authors: [], // Backend doesn't return authors yet
+                abstract: data.paper.abstract || '',
+                doi: undefined, // Backend doesn't return DOI yet
+                publication_date: undefined, // Backend doesn't return publication date yet
+                file_path: data.paper.url,
+                created_at: new Date().toISOString(), // Backend doesn't return timestamps yet
+                updated_at: new Date().toISOString() // Backend doesn't return timestamps yet
             };
             
             setState({ 

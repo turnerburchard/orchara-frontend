@@ -1,11 +1,19 @@
 import { useState, useEffect } from 'react';
 import config from '../config';
-import type { Paper, UserPapersResponse } from '../types/library';
+import type { Paper } from '../types/library';
 
 interface UserPapersState {
     papers: Paper[];
     loading: boolean;
     error: string | null;
+}
+
+// Backend paper structure
+interface BackendPaper {
+    paper_id: string;
+    title: string;
+    url: string;
+    abstract?: string;
 }
 
 export const useUserPapers = (userId: string = 'user0') => {
@@ -26,10 +34,21 @@ export const useUserPapers = (userId: string = 'user0') => {
                 throw new Error(errorText || 'Failed to fetch papers');
             }
 
-            const data = await response.json() as UserPapersResponse;
+            const data = await response.json();
             
-            // Ensure we have an array of papers
-            const papers = Array.isArray(data.papers) ? data.papers : [];
+            // Transform the backend response to match our Paper interface
+            const papers = Array.isArray(data.papers) ? data.papers.map((paper: BackendPaper) => ({
+                id: paper.paper_id,
+                paper_id: paper.paper_id,
+                title: paper.title,
+                authors: [], // Backend doesn't return authors yet
+                abstract: paper.abstract || '',
+                doi: undefined, // Backend doesn't return DOI yet
+                publication_date: undefined, // Backend doesn't return publication date yet
+                file_path: paper.url,
+                created_at: new Date().toISOString(), // Backend doesn't return timestamps yet
+                updated_at: new Date().toISOString() // Backend doesn't return timestamps yet
+            })) : [];
             
             setState({
                 papers,
@@ -65,7 +84,6 @@ export const useUserPapers = (userId: string = 'user0') => {
                 throw new Error(errorText || 'Failed to delete paper');
             }
 
-            // Refresh the papers list after successful deletion
             await refreshPapers();
             return true;
         } catch (error) {
