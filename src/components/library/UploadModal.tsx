@@ -40,6 +40,7 @@ const UploadModal: FC<UploadModalProps> = ({ isOpen, onClose, onSuccess, userId 
             await uploadFiles(files);
             if (success && onSuccess) {
                 onSuccess();
+                onClose();
             }
         } catch (err) {
             console.error('Upload failed:', err);
@@ -67,17 +68,15 @@ const UploadModal: FC<UploadModalProps> = ({ isOpen, onClose, onSuccess, userId 
                         <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
                             Upload Successful!
                         </h3>
-                        {paper && (
-                            <p className="text-gray-600 dark:text-gray-300 mb-4">
-                                {paper.title} has been added to your library.
-                            </p>
-                        )}
                         {missingDoi && (
                             <p className="text-yellow-600 dark:text-yellow-400 text-sm mb-4">
-                                Note: No DOI was found in the paper. You may want to add it manually later.
+                                Note: No DOI was found in the paper.
                             </p>
                         )}
-                        <BlackButton onClick={onClose}>
+                        <BlackButton onClick={() => {
+                            if (onSuccess) onSuccess();
+                            onClose();
+                        }}>
                             Close
                         </BlackButton>
                     </div>
