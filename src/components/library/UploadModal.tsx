@@ -13,7 +13,7 @@ interface UploadModalProps {
 
 const UploadModal: FC<UploadModalProps> = ({ isOpen, onClose, onSuccess, userId }) => {
     const [files, setFiles] = useState<File[]>([]);
-    const { uploadFiles, loading, error, success, paper, missingDoi, resetState } = useUpload(userId);
+    const { uploadFiles, loading, error, success, missingDoi, resetState } = useUpload(userId);
 
     const handleClose = () => {
         if (success && onSuccess) {

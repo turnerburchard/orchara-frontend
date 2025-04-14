@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import { useState } from 'react';
 import type { Paper } from '../../types/library';
-import { DocumentTextIcon, TrashIcon } from '@heroicons/react/24/outline';
+import {TrashIcon } from '@heroicons/react/24/outline';
 import PaperDetailsModal from './PaperDetailsModal';
 
 interface PaperCardProps {
