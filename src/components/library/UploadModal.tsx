@@ -13,7 +13,16 @@ interface UploadModalProps {
 
 const UploadModal: FC<UploadModalProps> = ({ isOpen, onClose, onSuccess, userId }) => {
     const [files, setFiles] = useState<File[]>([]);
-    const { uploadFiles, loading, error, success, paper, missingDoi } = useUpload(userId);
+    const { uploadFiles, loading, error, success, paper, missingDoi, resetState } = useUpload(userId);
+
+    const handleClose = () => {
+        if (success && onSuccess) {
+            onSuccess();
+        }
+        resetState();
+        setFiles([]);
+        onClose();
+    };
 
     const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
@@ -40,7 +49,7 @@ const UploadModal: FC<UploadModalProps> = ({ isOpen, onClose, onSuccess, userId 
             await uploadFiles(files);
             if (success && onSuccess) {
                 onSuccess();
-                onClose();
+                handleClose();
             }
         } catch (err) {
             console.error('Upload failed:', err);
@@ -73,10 +82,7 @@ const UploadModal: FC<UploadModalProps> = ({ isOpen, onClose, onSuccess, userId 
                                 Note: No DOI was found in the paper.
                             </p>
                         )}
-                        <BlackButton onClick={() => {
-                            if (onSuccess) onSuccess();
-                            onClose();
-                        }}>
+                        <BlackButton onClick={handleClose}>
                             Close
                         </BlackButton>
                     </div>
@@ -132,7 +138,7 @@ const UploadModal: FC<UploadModalProps> = ({ isOpen, onClose, onSuccess, userId 
 
                         <div className="flex justify-end space-x-3">
                             <button
-                                onClick={onClose}
+                                onClick={handleClose}
                                 className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100"
                             >
                                 Cancel
