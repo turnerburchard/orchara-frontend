@@ -79,10 +79,10 @@ export const useUpload = (userId: string = 'user0') => {
             
             return data.success;
         } catch (error) {
-            const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+            console.error('Upload error:', error);
             setState({ 
                 loading: false, 
-                error: errorMessage, 
+                error: 'Upload failed. Please try again.', 
                 success: false,
                 paper: null,
                 missingDoi: false
