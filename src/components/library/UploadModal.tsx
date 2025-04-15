@@ -13,7 +13,7 @@ interface UploadModalProps {
 
 const UploadModal: FC<UploadModalProps> = ({ isOpen, onClose, onSuccess, userId }) => {
     const [files, setFiles] = useState<File[]>([]);
-    const { uploadFiles, loading, error, success, missingDoi, resetState } = useUpload(userId);
+    const { uploadFiles, loading, error, success, resetState } = useUpload(userId);
 
     const handleClose = () => {
         if (success && onSuccess) {
@@ -77,11 +77,6 @@ const UploadModal: FC<UploadModalProps> = ({ isOpen, onClose, onSuccess, userId 
                         <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
                             Upload Successful!
                         </h3>
-                        {missingDoi && (
-                            <p className="text-yellow-600 dark:text-yellow-400 text-sm mb-4">
-                                Note: No DOI was found in the paper.
-                            </p>
-                        )}
                         <BlackButton onClick={handleClose}>
                             Close
                         </BlackButton>

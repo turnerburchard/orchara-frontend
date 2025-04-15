@@ -11,6 +11,19 @@ interface PaperCardProps {
 
 const PaperCard: FC<PaperCardProps> = ({ paper, onDelete }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
+
+    const handleDeleteClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setIsDeleteConfirmOpen(true);
+    };
+
+    const handleConfirmDelete = () => {
+        if (onDelete) {
+            onDelete(paper.paper_id);
+        }
+        setIsDeleteConfirmOpen(false);
+    };
 
     return (
         <>
@@ -27,7 +40,7 @@ const PaperCard: FC<PaperCardProps> = ({ paper, onDelete }) => {
                             {onDelete && (
                                 <button 
                                     className="text-red-500 hover:text-red-700"
-                                    onClick={() => onDelete(paper.paper_id)}
+                                    onClick={handleDeleteClick}
                                     title="Delete paper"
                                 >
                                     <TrashIcon className="h-5 w-5" />
@@ -43,6 +56,34 @@ const PaperCard: FC<PaperCardProps> = ({ paper, onDelete }) => {
                 onClose={() => setIsModalOpen(false)}
                 paper={paper}
             />
+
+            {/* Delete Confirmation Modal */}
+            {isDeleteConfirmOpen && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md">
+                        <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
+                            Confirm Deletion
+                        </h3>
+                        <p className="text-gray-700 dark:text-gray-300 mb-6">
+                            Are you sure you want to delete "{paper.title || 'Untitled Paper'}"? This action cannot be undone.
+                        </p>
+                        <div className="flex justify-end space-x-3">
+                            <button
+                                onClick={() => setIsDeleteConfirmOpen(false)}
+                                className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded hover:bg-gray-300 dark:hover:bg-gray-600"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleConfirmDelete}
+                                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </>
     );
 };

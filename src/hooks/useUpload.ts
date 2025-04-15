@@ -7,7 +7,6 @@ interface UploadState {
     error: string | null;
     success: boolean;
     paper: Paper | null;
-    missingDoi: boolean;
 }
 
 export const useUpload = (userId: string = 'user0') => {
@@ -16,7 +15,6 @@ export const useUpload = (userId: string = 'user0') => {
         error: null,
         success: false,
         paper: null,
-        missingDoi: false
     });
 
     const uploadFile = async (file: File) => {
@@ -31,7 +29,7 @@ export const useUpload = (userId: string = 'user0') => {
             return false;
         }
 
-        setState({ loading: true, error: null, success: false, paper: null, missingDoi: false });
+        setState({ loading: true, error: null, success: false, paper: null});
 
         try {
             const formData = new FormData();
@@ -74,7 +72,6 @@ export const useUpload = (userId: string = 'user0') => {
                 error: null, 
                 success: data.success, 
                 paper,
-                missingDoi: data.missing_doi || false
             });
             
             return data.success;
@@ -85,7 +82,6 @@ export const useUpload = (userId: string = 'user0') => {
                 error: 'Upload failed. Please try again.', 
                 success: false,
                 paper: null,
-                missingDoi: false
             });
             return false;
         }
@@ -107,7 +103,6 @@ export const useUpload = (userId: string = 'user0') => {
             error: null, 
             success: false,
             paper: null,
-            missingDoi: false
         });
     };
 
